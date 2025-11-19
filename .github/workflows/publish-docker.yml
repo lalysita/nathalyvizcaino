@@ -85,6 +85,7 @@ jobs:
             echo "deloyando los servicio"
 
             cd ~/AUTOMATIZAR
+            
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u Lalysita --password-stdin
             docker pull ghcr.io/lalysita/nathalyvizcaino:1.0.1
 
