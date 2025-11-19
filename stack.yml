@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  nathaly:
+    image: ghcr.io/byronmoreno/nueces:1.0.1
+    build: 
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nathaly.entrypoints=http"
+        - "traefik.http.routers.nathaly.rule=Host(`nathaly.byronrm.com`)"
+        - "traefik.http.middlewares.nathaly-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.nathaly.middlewares=nathaly-https-redirect"
+        - "traefik.http.routers.nathaly-secure.entrypoints=https"
+        - "traefik.http.routers.nathaly-secure.rule=Host(`nathaly.byronrm.com`)"
+        - "traefik.http.routers.nathaly-secure.tls=true"
+        - "traefik.http.routers.nathaly-secure.tls.certresolver=http"
+        - "traefik.http.routers.nathaly-secure.service=nathaly"
+        - "traefik.http.services.nathaly.loadbalancer.server.port=80"
+        - "traefik.docker.network=traefik-public"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
